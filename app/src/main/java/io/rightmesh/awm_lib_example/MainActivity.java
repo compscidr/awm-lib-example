@@ -9,9 +9,9 @@ import com.anadeainc.rxbus.BusProvider;
 import com.anadeainc.rxbus.Subscribe;
 
 import io.rightmesh.awm.AndroidWirelessStatsCollector;
-import io.rightmesh.awm.BluetoothStats;
-import io.rightmesh.awm.GPSStats;
-import io.rightmesh.awm.WiFiStats;
+import io.rightmesh.awm.stats.BluetoothStats;
+import io.rightmesh.awm.stats.GPSStats;
+import io.rightmesh.awm.stats.WiFiStats;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        awsc = new AndroidWirelessStatsCollector(this);
+        awsc = new AndroidWirelessStatsCollector(this, true);
         awsc.start();
 
         txtBtDevices = findViewById(R.id.btDevices);
