@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        awsc = new AndroidWirelessStatsCollector(this, true);
+        awsc = new AndroidWirelessStatsCollector(this, false, true);
         awsc.start();
 
         txtBtDevices = findViewById(R.id.btDevices);
