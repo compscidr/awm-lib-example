@@ -11,13 +11,10 @@
         android:id="@+id/gpsCoords"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:text="GPS Position:"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="163dp" />
 
     <TextView
         android:id="@+id/btDevices"
@@ -25,6 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:maxLines="10"
+        android:minLines="10"
+        android:scrollbars="vertical"
         android:text="btDevices: 0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gpsCoords" />
@@ -33,13 +33,14 @@
         android:id="@+id/wifiDevices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:maxLines="10"
+        android:minLines="10"
+        android:scrollbars="vertical"
         android:text="wifiDevices: 0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btDevices"
-        app:layout_constraintTop_toBottomOf="@+id/gpsCoords" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btDevices" />
 
     <TextView
         android:id="@+id/txtRecords"
@@ -62,6 +63,18 @@
         android:layout_marginBottom="8dp"
         android:text="Uploaded Records:"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnOnOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="ToggleOnOff"
+        android:text="TURN OFF"
+        app:layout_constraintBottom_toTopOf="@+id/txtRecords"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
