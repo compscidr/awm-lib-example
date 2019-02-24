@@ -1,6 +1,7 @@
 package io.rightmesh.awm_lib_example;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,8 +13,14 @@ import android.widget.TextView;
 import com.anadeainc.rxbus.Bus;
 import com.anadeainc.rxbus.BusProvider;
 import com.anadeainc.rxbus.Subscribe;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import io.rightmesh.awm.AndroidWirelessStatsCollector;
 import io.rightmesh.awm.loggers.LogEvent;
+import io.rightmesh.awm.loggers.WiFiScan;
 import io.rightmesh.awm.stats.GPSStats;
 import io.rightmesh.awm.stats.NetworkDevice;
 import io.rightmesh.awm.stats.NetworkStat;
@@ -43,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         started = false;
 
-        awsc = new AndroidWirelessStatsCollector(this, false, false);
+        awsc = new AndroidWirelessStatsCollector(this, false, false, true);
         awsc.start();
         started = true;
 
@@ -80,14 +87,20 @@ public class MainActivity extends AppCompatActivity {
             }
             txtBtDevices.setText(status);
         } else if (networkStat.getType() == WIFI) {
-            Log.d("MA", "GOT WIFI NETWORK STAT TYPE");
+            Log.d("MA", "GOT WIFI NETWORK STAT TYPE: " + networkStat.getDevices().size());
             String status = "wifiDevices: ";
             status = status + networkStat.getDevices().size();
             for(NetworkDevice device : networkStat.getDevices()) {
                 status = status + "\n" + device.getMac() + " " + device.getName() + " "
                         + device.getFrequency() + "Mhz " + device.getSignalStrength() + "dB";
             }
+
             txtWifiDevices.setText(status);
+
+            ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+            scheduler.schedule(() -> {
+                eventBus.post(new WiFiScan());
+            }, 5, TimeUnit.SECONDS);
         } else {
             Log.d("MA", "GOT UNKNOWN NETWORK STAT TYPE");
         }
@@ -147,5 +160,10 @@ public class MainActivity extends AppCompatActivity {
             txtWifiDevices.setText("wifiDevices: ");
             btnOnOff.setText("TURN OFF");
         }
+    }
+
+    public void showMap(View v) {
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
     }
 }
