@@ -1,0 +1,33 @@
+<android.support.v7.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="Settings">
+
+        <SwitchPreferenceCompat
+            android:key="wifiuploads"
+            android:title="Wi-Fi uploads"
+            android:summary="Upload only using Wi-Fi instead of Cellular"/>
+
+        <SwitchPreferenceCompat
+            android:key="caching"
+            android:title="Caching"
+            android:summary="Save records when Internet is not available"/>
+
+        <EditTextPreference
+            android:key="url"
+            android:title="Server URL"
+            android:summary="The URL of the server you wish to upload result to"
+            >
+        </EditTextPreference>
+
+        <SwitchPreferenceCompat
+            android:key="clearboot"
+            android:title="Clear data file"
+            android:summary="Clear the data file when the app is restarted"/>
+
+    </PreferenceCategory>
+
+
+</android.support.v7.preference.PreferenceScreen>
