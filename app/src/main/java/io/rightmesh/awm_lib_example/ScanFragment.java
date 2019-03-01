@@ -41,6 +41,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
     private TextView txtGPS;
     private TextView txtSavedRecords;
     private TextView txtUploadedRecords;
+    private TextView txtStatus;
     private MainActivity mainActivity;
 
     @Nullable
@@ -54,6 +55,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         Button btnPause = (Button) view.findViewById(R.id.btnPause);
         btnPause.setOnClickListener(this);
 
+        txtStatus = view.findViewById(R.id.txtStatus);
         txtBtDevices = view.findViewById(R.id.btDevices);
         txtWifiDevices = view.findViewById(R.id.wifiDevices);
         txtGPS = view.findViewById(R.id.gpsCoords);
@@ -66,9 +68,12 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
 
             new Thread(() -> {
                 int savedRecords = mainActivity.getAwsc().getSavedRecordCount();
-                txtSavedRecords.setText("Saved Records: " + savedRecords);
                 int uploadedRecords = mainActivity.getAwsc().getUploadedRecordCount();
-                txtUploadedRecords.setText("Uploaded Records: " + uploadedRecords);
+
+                mainActivity.runOnUiThread(() -> {
+                    txtSavedRecords.setText("Saved Records: " + savedRecords);
+                    txtUploadedRecords.setText("Uploaded Records: " + uploadedRecords);
+                });
             }).start();
         }
 
@@ -128,6 +133,14 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
     @Subscribe
     public void logEvent(LogEvent logEvent) {
         new Thread(() -> {
+
+            if(logEvent.getLogType() == LogEvent.LogType.DB
+                    && logEvent.getEventType() == LogEvent.EventType.FAILURE) {
+                txtStatus.setText("Error saving log to dB. Storage probably full.");
+                Button btnPause = getView().findViewById(R.id.btnPause);
+                btnPause.callOnClick();
+            }
+
             int savedRecords = mainActivity.getAwsc().getSavedRecordCount();
             int uploadedRecords = mainActivity.getAwsc().getUploadedRecordCount();
 
