@@ -71,6 +71,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="395dp"
         android:layout_height="104dp"
         android:layout_marginStart="8dp"
@@ -102,5 +103,16 @@
             tools:layout_editor_absoluteX="265dp"
             tools:layout_editor_absoluteY="620dp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
