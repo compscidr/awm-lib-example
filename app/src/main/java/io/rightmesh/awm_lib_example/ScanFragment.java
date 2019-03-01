@@ -136,15 +136,17 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
 
             if(logEvent.getLogType() == LogEvent.LogType.DB
                     && logEvent.getEventType() == LogEvent.EventType.FAILURE) {
-                txtStatus.setText("Error saving log to dB. Storage probably full.");
-                Button btnPause = getView().findViewById(R.id.btnPause);
-                btnPause.callOnClick();
+                mainActivity.runOnUiThread(() -> {
+                    txtStatus.setText("Error saving log to dB. Storage probably full.");
+                    Button btnPause = getView().findViewById(R.id.btnPause);
+                    btnPause.callOnClick();
+                });
             }
 
             int savedRecords = mainActivity.getAwsc().getSavedRecordCount();
             int uploadedRecords = mainActivity.getAwsc().getUploadedRecordCount();
 
-            getActivity().runOnUiThread(()-> {
+            mainActivity.runOnUiThread(()-> {
                 txtSavedRecords.setText("Saved Records: " + savedRecords);
                 txtUploadedRecords.setText("Uploaded Records: " + uploadedRecords);
             });
