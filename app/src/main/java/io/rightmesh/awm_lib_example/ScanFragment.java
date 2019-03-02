@@ -43,6 +43,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
     private TextView txtUploadedRecords;
     private TextView txtStatus;
     private MainActivity mainActivity;
+    private static int uploads = 0;
 
     @Nullable
     @Override
@@ -84,9 +85,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        SharedPreferences sharedPref = this.getActivity().getPreferences(Context.MODE_PRIVATE);
-        int uploadedRecords = sharedPref.getInt("uploadedRecords", 0);
-        txtUploadedRecords.setText("Uploaded Records: " + uploadedRecords);
+        txtUploadedRecords.setText("Uploaded Records: " + uploads);
     }
 
     @Override public void onDestroyView() {
@@ -148,7 +147,11 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
 
             mainActivity.runOnUiThread(()-> {
                 txtSavedRecords.setText("Saved Records: " + savedRecords);
-                txtUploadedRecords.setText("Uploaded Records: " + uploadedRecords);
+                if (mainActivity.clearUploads()) {
+                    txtUploadedRecords.setText("Uploaded Records: " + uploads);
+                } else {
+                    txtUploadedRecords.setText("Uploaded Records: " + uploadedRecords);
+                }
             });
         }).start();
     }
@@ -163,13 +166,13 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
             Button btnOnOff = getView().findViewById(R.id.btnOnOff);
             if (btnOnOff.getText().equals("TURN OFF")) {
                 Log.d("MA", "TURN OFF");
-                mainActivity.getAwsc().stop();
+                mainActivity.stop();
                 txtBtDevices.setText("Turned off.");
                 txtWifiDevices.setText("Turned off.");
                 btnOnOff.setText("TURN ON");
             } else {
                 Log.d("MA", "TURN ON");
-                mainActivity.getAwsc().start();
+                mainActivity.start();
                 txtBtDevices.setText("btDevices: ");
                 txtWifiDevices.setText("wifiDevices: ");
                 btnOnOff.setText("TURN OFF");

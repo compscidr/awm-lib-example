@@ -1,19 +1,23 @@
 package io.rightmesh.awm_lib_example;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
+import android.util.Log;
 
 import io.rightmesh.awm.AndroidWirelessStatsCollector;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getCanonicalName();
     private AndroidWirelessStatsCollector awsc;
     private boolean started;
+    private boolean clearUpload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         started = false;
-        awsc = new AndroidWirelessStatsCollector(this, false, false, true);
-        awsc.start();
-        started = true;
+        start();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setLogo(R.mipmap.ic_launcher);
@@ -42,9 +44,42 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        stop();
+    }
+
+    void stop() {
         if(started) {
             awsc.stop();
+            started = false;
         }
+    }
+
+    void start() {
+        if (!started) {
+            SharedPreferences prefs =
+                    PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+            boolean caching = prefs.getBoolean("caching", true);
+            boolean wifiuploads = prefs.getBoolean("wifiuploads", false);
+            boolean clearboot = prefs.getBoolean("clearboot", false);
+            clearUpload = prefs.getBoolean("clearupload", true);
+            boolean privacy = prefs.getBoolean("privacy", false);
+            String url = prefs.getString("url", "https://test.rightmesh.io/awm-lib-server/");
+
+            Log.d(TAG, "CONFIGS: " + caching + " " + wifiuploads + " " + clearboot + " "
+                + " " + clearUpload + " " + privacy + " " + url );
+
+            awsc = new AndroidWirelessStatsCollector(this, caching, wifiuploads, clearboot,
+                    clearUpload, privacy, url);
+
+            awsc.start();
+            started = true;
+        }
+    }
+
+    public boolean clearUploads() {
+        return clearUpload;
     }
 
     public AndroidWirelessStatsCollector getAwsc() {
