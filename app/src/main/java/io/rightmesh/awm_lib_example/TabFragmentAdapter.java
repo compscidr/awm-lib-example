@@ -6,8 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class TabFragmentAdapter extends FragmentPagerAdapter {
 
-    //private String tabTitles[] = new String[] { "Scan Results", "Map View", "Settings" };
-    private String tabTitles[] = new String[] { "Scan Results", "Map View"};
+    private String tabTitles[] = new String[] { "Scan Results", "Map View", "Settings" };
 
     public TabFragmentAdapter(FragmentManager fm) {
         super(fm);
@@ -26,7 +25,7 @@ public class TabFragmentAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return tabTitles.length;
     }
 
     @Override
