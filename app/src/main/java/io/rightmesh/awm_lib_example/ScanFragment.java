@@ -1,8 +1,6 @@
 package io.rightmesh.awm_lib_example;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -41,7 +39,9 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
     private TextView txtGPS;
     private TextView txtSavedRecords;
     private TextView txtUploadedRecords;
+    private TextView txtStatus;
     private MainActivity mainActivity;
+    private static int uploads = 0;
 
     @Nullable
     @Override
@@ -54,6 +54,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         Button btnPause = (Button) view.findViewById(R.id.btnPause);
         btnPause.setOnClickListener(this);
 
+        txtStatus = view.findViewById(R.id.txtStatus);
         txtBtDevices = view.findViewById(R.id.btDevices);
         txtWifiDevices = view.findViewById(R.id.wifiDevices);
         txtGPS = view.findViewById(R.id.gpsCoords);
@@ -66,9 +67,12 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
 
             new Thread(() -> {
                 int savedRecords = mainActivity.getAwsc().getSavedRecordCount();
-                txtSavedRecords.setText("Saved Records: " + savedRecords);
                 int uploadedRecords = mainActivity.getAwsc().getUploadedRecordCount();
-                txtUploadedRecords.setText("Uploaded Records: " + uploadedRecords);
+
+                mainActivity.runOnUiThread(() -> {
+                    txtSavedRecords.setText("Saved Records: " + savedRecords);
+                    txtUploadedRecords.setText("Uploaded Records: " + uploadedRecords);
+                });
             }).start();
         }
 
@@ -79,9 +83,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        SharedPreferences sharedPref = this.getActivity().getPreferences(Context.MODE_PRIVATE);
-        int uploadedRecords = sharedPref.getInt("uploadedRecords", 0);
-        txtUploadedRecords.setText("Uploaded Records: " + uploadedRecords);
+        txtUploadedRecords.setText("Uploaded Records: " + uploads);
     }
 
     @Override public void onDestroyView() {
@@ -128,12 +130,26 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
     @Subscribe
     public void logEvent(LogEvent logEvent) {
         new Thread(() -> {
+
+            if(logEvent.getLogType() == LogEvent.LogType.DB
+                    && logEvent.getEventType() == LogEvent.EventType.FAILURE) {
+                mainActivity.runOnUiThread(() -> {
+                    txtStatus.setText("Error saving log to dB. Storage probably full.");
+                    Button btnPause = getView().findViewById(R.id.btnPause);
+                    btnPause.callOnClick();
+                });
+            }
+
             int savedRecords = mainActivity.getAwsc().getSavedRecordCount();
             int uploadedRecords = mainActivity.getAwsc().getUploadedRecordCount();
 
-            getActivity().runOnUiThread(()-> {
+            mainActivity.runOnUiThread(()-> {
                 txtSavedRecords.setText("Saved Records: " + savedRecords);
-                txtUploadedRecords.setText("Uploaded Records: " + uploadedRecords);
+                if (mainActivity.clearUploads()) {
+                    txtUploadedRecords.setText("Uploaded Records: " + uploads);
+                } else {
+                    txtUploadedRecords.setText("Uploaded Records: " + uploadedRecords);
+                }
             });
         }).start();
     }
@@ -148,13 +164,13 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
             Button btnOnOff = getView().findViewById(R.id.btnOnOff);
             if (btnOnOff.getText().equals("TURN OFF")) {
                 Log.d("MA", "TURN OFF");
-                mainActivity.getAwsc().stop();
+                mainActivity.stop();
                 txtBtDevices.setText("Turned off.");
                 txtWifiDevices.setText("Turned off.");
                 btnOnOff.setText("TURN ON");
             } else {
                 Log.d("MA", "TURN ON");
-                mainActivity.getAwsc().start();
+                mainActivity.start();
                 txtBtDevices.setText("btDevices: ");
                 txtWifiDevices.setText("wifiDevices: ");
                 btnOnOff.setText("TURN OFF");

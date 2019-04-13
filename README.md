@@ -7,6 +7,8 @@ The app currently supports collecting Wi-Fi and Bluetooth scan data,
 stores it locally on the device using Android Room persistent storage,
 and then uploads the data using JSON to a server running the [awm-lib-server](https://github.com/compscidr/awm-lib-server) project.
 
+The privacy policy is available at [app/src/main/assets/privacy/privacy_policy.html](app/src/main/assets/privacy/privacy_policy.html)
+
 While the device is running, locally, a heatmap is generated showing then position of other Bluetooth and Wi-Fi devices, with the intensity of
 the heatmap reprsenting the number of devices in range at that data point.
 
