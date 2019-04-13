@@ -1,5 +1,6 @@
 package io.rightmesh.awm_lib_example;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
@@ -23,6 +24,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        boolean privacyPolicy = prefs.getBoolean("policy", false);
+        if (!privacyPolicy) {
+            Intent intent = new Intent(this, PrivacyPolicyActivity.class);
+            startActivityForResult(intent, 100);
+        } else {
+            init();
+        }
+    }
+
+    void init() {
         setContentView(R.layout.activity_main);
 
         started = false;
@@ -39,6 +52,17 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode==RESULT_OK) {
+            if (requestCode == 100) {
+                init();
+            }
+        }
     }
 
     @Override
