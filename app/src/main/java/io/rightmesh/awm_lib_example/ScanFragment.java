@@ -141,6 +141,13 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
             }
 
             int savedRecords = mainActivity.getAwsc().getSavedRecordCount();
+
+            //this will capture only the session uploads in the case where we are clearing them
+            if(logEvent.getLogType() == LogEvent.LogType.NETWORK
+                    && logEvent.getEventType() == LogEvent.EventType.SUCCESS) {
+                uploads++;
+            }
+            //this will capture any uploads where the data hasn't been cleared
             int uploadedRecords = mainActivity.getAwsc().getUploadedRecordCount();
 
             mainActivity.runOnUiThread(()-> {
