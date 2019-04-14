@@ -12,5 +12,5 @@ The privacy policy is available at [app/src/main/assets/privacy/privacy_policy.h
 While the device is running, locally, a heatmap is generated showing then position of other Bluetooth and Wi-Fi devices, with the intensity of
 the heatmap reprsenting the number of devices in range at that data point.
 
-![Device Scan Screen](/screenshots/1.png?raw=true "Device Scan Screen")
-![Heapmap view](/screenshots/2.png?raw=true "Heapmap view")
+<img src="/screenshots/1.png?raw=true" width="300"/>  <img src="/screenshots/2.png?raw=true" width="300"/>
+
