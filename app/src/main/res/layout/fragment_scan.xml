@@ -20,30 +20,44 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/btDevices"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:maxLines="12"
-        android:minLines="12"
-        android:scrollbars="vertical"
+        android:id="@+id/btDeviceCount"
+        app:layout_constraintTop_toBottomOf="@id/gpsCoords"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
         android:text="@string/btdevices_0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gpsCoords" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <ListView
+        android:id="@+id/btDevices"
+        app:layout_constraintTop_toBottomOf="@id/btDeviceCount"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"/>
 
     <TextView
-        android:id="@+id/wifiDevices"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:maxLines="15"
-        android:minLines="15"
-        android:scrollbars="vertical"
+        android:id="@+id/wifiDeviceCount"
+        app:layout_constraintTop_toBottomOf="@+id/btDevices"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
         android:text="@string/wifidevices_0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btDevices" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <ListView
+        android:id="@+id/wifiDevices"
+        app:layout_constraintTop_toBottomOf="@id/wifiDeviceCount"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
 
     <TextView
         android:id="@+id/txtRecords"
@@ -98,7 +112,7 @@
             android:id="@+id/btnPause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PAUSE"
+            android:text="@string/pause"
             tools:layout_editor_absoluteX="265dp"
             tools:layout_editor_absoluteY="620dp" />
     </LinearLayout>
