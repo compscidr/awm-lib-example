@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             boolean clearboot = prefs.getBoolean("clearboot", false);
             clearUpload = prefs.getBoolean("clearupload", true);
             boolean privacy = prefs.getBoolean("privacy", false);
-            String url = prefs.getString("url", "https://test.rightmesh.io/awm-lib-server/index.php");
+            String url = prefs.getString("url", "https://test.jasonernst.com/awm-lib-server/index.php");
 
             Log.d(TAG, "CONFIGS: " + caching + " " + wifiuploads + " " + clearboot + " "
                 + " " + clearUpload + " " + privacy + " " + url );
