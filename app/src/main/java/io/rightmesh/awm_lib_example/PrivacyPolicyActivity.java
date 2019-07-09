@@ -2,6 +2,7 @@ package io.rightmesh.awm_lib_example;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 import android.view.View;
@@ -16,6 +17,7 @@ public class PrivacyPolicyActivity extends Activity {
         setContentView(R.layout.activity_privacy_policy);
 
         web = findViewById(R.id.webView);
+        web.setBackgroundColor(Color.TRANSPARENT);
         web.loadUrl("file:///android_asset/privacy_policy.html");
     }
 

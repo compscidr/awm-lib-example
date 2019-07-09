@@ -3,4 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="backgroundGreen">#A9F5A9</color>
+    <color name="gentleGreen">#DAFFE5</color>
+    <color name="accept">#16A92E</color>
+    <color name="decline">#CD6B6C</color>
 </resources>
